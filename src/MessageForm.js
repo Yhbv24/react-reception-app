@@ -32,7 +32,7 @@ class MessageForm extends Component {
   }
   onSubmit(e) {
     e.preventDefault();
-    console.log('test');
+    console.log(this.state.name);
   }
   render() {
     return (<form>
@@ -47,7 +47,7 @@ class MessageForm extends Component {
           <option value={reason} key={i}>{reason}</option>)
         }
       </select>
-      <input type="text" name="name" placeholder="YOUR NAME" onChange={this.nameChange }/>
+      <input type="text" name="name" placeholder="YOUR NAME" onChange={this.nameChange} />
       <input type="text" name="org" placeholder="YOUR ORGANIZATION" />
       <button type="submit" onSubmit={this.onSubmit}>Message</button>
     </form>)
