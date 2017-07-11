@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import token from './token';
+import request from 'superagent';
 
 class MessageForm extends Component {
   constructor() {
     super();
     this.state = {};
-    this.onSubmit = this.onSubmit.bind(this);
     this.empChange = this.empChange.bind(this);
     this.nameChange = this.nameChange.bind(this);
     this.orgChange = this.orgChange.bind(this);
     this.reasonChange = this.reasonChange.bind(this);
+    this.sendSlackMessage = this.sendSlackMessage.bind(this);
   }
   empChange(e) {
     this.setState({
@@ -30,9 +32,20 @@ class MessageForm extends Component {
       reason: e.target.value
     });
   }
-  onSubmit(e) {
+  sendSlackMessage(e) {
     e.preventDefault();
-    console.log(this.state.name);
+    request
+    .post('https://slack.com/api/chat.postMessage')
+    .send({
+      token: token,
+      channel: this.state.emp,
+      as_user: 0,
+      text: 'Test: from Ash using React',
+      username: 'R/West Guest'
+    })
+    .type('form')
+    .end(function(err, res) {
+    });
   }
   render() {
     return (<form>
@@ -42,14 +55,14 @@ class MessageForm extends Component {
           <option value={emp.id} key={i}>{emp.profile.real_name}</option>)
         }
       </select>
-      <select className="reason-select" name="reason">
+      <select className="reason-select" name="reason" onChange={this.reasonChange}>
         {this.props.reasons.map((reason, i) =>
           <option value={reason} key={i}>{reason}</option>)
         }
       </select>
       <input type="text" name="name" placeholder="YOUR NAME" onChange={this.nameChange} />
       <input type="text" name="org" placeholder="YOUR ORGANIZATION" />
-      <button type="submit" onSubmit={this.onSubmit}>Message</button>
+      <button type="submit" onClick={this.sendSlackMessage}>Message</button>
     </form>)
   }
 }

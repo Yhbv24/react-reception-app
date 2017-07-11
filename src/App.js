@@ -18,26 +18,26 @@ class App extends Component {
     var emps = [];
     var _this = this;
     request
-   .post('https://slack.com/api/users.list')
-   .send({
-     token: token,
-     presence: true
-   })
-   .type('form')
-   .end(function(err, res){
-     if (err || !res.ok) {
-       alert('Oh no! error');
-     } else {
-       for (var i = 0; i < res.body.members.length; i++) {
-         if (res.body.members[i].profile.real_name_normalized !== '' && !res.body.members[i].deleted && res.body.members[i].profile.real_name_normalized !== 'slackbot' && res.body.members[i].profile.real_name_normalized !== 'Trello') {
-           emps.push(res.body.members[i]);
-         }
-       }
-       _this.setState({
-         employees: emps
-       });
-     }
-   });
+    .post('https://slack.com/api/users.list')
+    .send({
+      token: token,
+      presence: true
+    })
+    .type('form')
+    .end(function(err, res) {
+      if (err || !res.ok) {
+        alert('Oh no! error');
+      } else {
+        for (var i = 0; i < res.body.members.length; i++) {
+          if (res.body.members[i].profile.real_name_normalized !== '' && !res.body.members[i].deleted && res.body.members[i].profile.real_name_normalized !== 'slackbot' && res.body.members[i].profile.real_name_normalized !== 'Trello') {
+          emps.push(res.body.members[i]);
+          }
+        }
+        _this.setState({
+          employees: emps
+        });
+      }
+    });
   }
   render() {
     if (this.state.employees) {
